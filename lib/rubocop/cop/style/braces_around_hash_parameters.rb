@@ -49,6 +49,9 @@ module RuboCop
 
           return unless node.arguments? && node.last_argument.hash_type? &&
                         !node.last_argument.empty?
+          return if node.last_argument.values.any? do |value_node|
+            value_node.block_type? && value_node.keywords?
+          end
 
           check(node.last_argument, node.arguments)
         end
